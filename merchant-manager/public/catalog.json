@@ -1,0 +1,2196 @@
+[
+  {
+    "name": "商品",
+    "items": [
+      {
+        "path": "/openApi/goods/list",
+        "desc": "商品列表",
+        "hint": "本地 + 已代理货源；可按 source 过滤；内存分页",
+        "reqFields": [
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配商品编号 / 名称"
+          },
+          {
+            "name": "source",
+            "required": false,
+            "type": "string",
+            "desc": "local / supply；空则全部"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"keywords\": \"\",\n  \"source\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "总数"
+          },
+          {
+            "name": "list",
+            "desc": "当前页；元素字段同「商品详情」"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"goods_no\": \"G10001\",\n        \"source\": \"local\",\n        \"name\": \"本地卡密商品\",\n        \"description\": \"商品说明\",\n        \"image\": \"https://example.com/a.png\",\n        \"delivery_method\": 1,\n        \"available_quantity\": 100,\n        \"limit_quantity\": 1,\n        \"unit_price\": 0,\n        \"sales_count\": 12\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goods/detail",
+        "desc": "商品详情",
+        "hint": "按 goods_no：优先本地，其次已代理货源",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "source",
+            "desc": "local 本地 / supply 货源"
+          },
+          {
+            "name": "name",
+            "desc": "名称"
+          },
+          {
+            "name": "description",
+            "desc": "说明"
+          },
+          {
+            "name": "image",
+            "desc": "图片 URL"
+          },
+          {
+            "name": "delivery_method",
+            "desc": "1 卡密 / 2 内容 / 3 人工发货"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "可售库存；内容商品固定 1，人工发货为不限"
+          },
+          {
+            "name": "limit_quantity",
+            "desc": "卡密起购数量，默认 1；内容商品固定 1"
+          },
+          {
+            "name": "unit_price",
+            "desc": "单价；本地 0，货源为采购价"
+          },
+          {
+            "name": "sales_count",
+            "desc": "销量"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"source\": \"local\",\n    \"name\": \"本地卡密商品\",\n    \"description\": \"商品说明\",\n    \"image\": \"https://example.com/a.png\",\n    \"delivery_method\": 1,\n    \"available_quantity\": 100,\n    \"limit_quantity\": 1,\n    \"unit_price\": 0,\n    \"sales_count\": 12\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "商品分类",
+    "items": [
+      {
+        "path": "/openApi/goodsCategory/list",
+        "desc": "商品分类查询",
+        "hint": "当前商户店内分类；可按关键词、状态筛选",
+        "reqFields": [
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配分类编号 / 名称"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "1 启用 / 0 停用；空则全部"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"keywords\": \"\",\n  \"status\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "总数"
+          },
+          {
+            "name": "list",
+            "desc": "当前页；含 goods_category_no / name / image / sort / status / create_time / update_time"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"goods_category_no\": \"C10001\",\n        \"name\": \"卡密分类\",\n        \"image\": \"\",\n        \"sort\": 0,\n        \"status\": 1,\n        \"create_time\": 1710000000,\n        \"update_time\": 1710000000\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goodsCategory/create",
+        "desc": "商品分类创建",
+        "hint": "创建店内分类；编号由平台生成，默认启用",
+        "reqFields": [
+          {
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "desc": "分类名称，最长 100"
+          },
+          {
+            "name": "image",
+            "required": false,
+            "type": "string",
+            "desc": "封面图 URL，最长 500"
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "type": "int",
+            "desc": "排序，默认 0"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"name\": \"卡密分类\",\n  \"image\": \"\",\n  \"sort\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_category_no",
+            "desc": "分类编号"
+          },
+          {
+            "name": "name",
+            "desc": "分类名称"
+          },
+          {
+            "name": "status",
+            "desc": "1 启用"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_category_no\": \"C10001\",\n    \"name\": \"卡密分类\",\n    \"status\": 1\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goodsCategory/changeStatus",
+        "desc": "商品分类状态更新",
+        "hint": "1 启用 / 0 停用",
+        "reqFields": [
+          {
+            "name": "goods_category_no",
+            "required": true,
+            "type": "string",
+            "desc": "分类编号"
+          },
+          {
+            "name": "status",
+            "required": true,
+            "type": "int",
+            "desc": "1 启用 / 0 停用"
+          }
+        ],
+        "requests": [
+          {
+            "label": "启用",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_category_no\": \"C10001\",\n  \"status\": 1,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          },
+          {
+            "label": "停用",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_category_no\": \"C10001\",\n  \"status\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_category_no",
+            "desc": "分类编号"
+          },
+          {
+            "name": "status",
+            "desc": "1 启用 / 0 停用"
+          }
+        ],
+        "responses": [
+          {
+            "label": "启用",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_category_no\": \"C10001\",\n    \"status\": 1\n  }\n}"
+          },
+          {
+            "label": "停用",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_category_no\": \"C10001\",\n    \"status\": 0\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "平台货源分类",
+    "items": [
+      {
+        "path": "/openApi/sourceCategory/tree",
+        "desc": "平台货源分类树",
+        "hint": "仅启用分类；创建商品且 agent_status=1 时，source_category_id 取本树节点 id",
+        "reqFields": [],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "list",
+            "desc": "树；节点含 id / parent_id / name / image / children"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"list\": [\n      {\n        \"id\": 1,\n        \"parent_id\": 0,\n        \"name\": \"游戏充值\",\n        \"image\": \"\",\n        \"children\": [\n          {\n            \"id\": 2,\n            \"parent_id\": 1,\n            \"name\": \"点卡\",\n            \"image\": \"\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "商品操作",
+    "items": [
+      {
+        "path": "/openApi/goods/create",
+        "desc": "创建商品",
+        "hint": "goods_no 空=新建自营商品，有值=更新；铺货商品仅支持改加价/分类/排序；需完成商家认证；卡密库存请用「上传卡密」",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": false,
+            "type": "string",
+            "desc": "空则新建；传入则更新对应商品"
+          },
+          {
+            "name": "name",
+            "required": true,
+            "type": "string",
+            "desc": "标题，最长 255；铺货商品不传"
+          },
+          {
+            "name": "image",
+            "required": true,
+            "type": "string",
+            "desc": "封面图 URL，最长 500；铺货商品不传"
+          },
+          {
+            "name": "description",
+            "required": false,
+            "type": "string",
+            "desc": "商品说明"
+          },
+          {
+            "name": "delivery_method",
+            "required": false,
+            "type": "int",
+            "desc": "1 卡密 / 2 内容 / 3 人工发货，默认 1"
+          },
+          {
+            "name": "delivery_order",
+            "required": false,
+            "type": "int",
+            "desc": "发卡顺序：0 先发旧卡 / 1 先发新卡 / 2 随机；仅卡密"
+          },
+          {
+            "name": "limit_quantity",
+            "required": false,
+            "type": "int",
+            "desc": "卡密起购数量，默认 1"
+          },
+          {
+            "name": "warning_stock_quantity",
+            "required": false,
+            "type": "int",
+            "desc": "库存预警数量；卡密默认 5"
+          },
+          {
+            "name": "instruction",
+            "required": false,
+            "type": "string",
+            "desc": "卡密使用说明"
+          },
+          {
+            "name": "content",
+            "required": false,
+            "type": "string",
+            "desc": "内容发货内容（富文本）；delivery_method=2 时必填"
+          },
+          {
+            "name": "manual_instruction",
+            "required": false,
+            "type": "string",
+            "desc": "人工发货说明（富文本）；delivery_method=3 时必填，买家付款后可见"
+          },
+          {
+            "name": "price",
+            "required": true,
+            "type": "float",
+            "desc": "售价，不能低于 0.02"
+          },
+          {
+            "name": "cost_price",
+            "required": false,
+            "type": "float",
+            "desc": "成本价"
+          },
+          {
+            "name": "agent_status",
+            "required": false,
+            "type": "int",
+            "desc": "0 不代理 / 1 开放代理，默认 0"
+          },
+          {
+            "name": "agent_price",
+            "required": false,
+            "type": "float",
+            "desc": "代理价；agent_status=1 时必填且大于 0"
+          },
+          {
+            "name": "source_category_id",
+            "required": false,
+            "type": "int",
+            "desc": "平台货源分类 ID；agent_status=1 时必填"
+          },
+          {
+            "name": "goods_category_no",
+            "required": false,
+            "type": "string",
+            "desc": "店内分类编号"
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "type": "int",
+            "desc": "排序，默认 0"
+          },
+          {
+            "name": "markup_rate",
+            "required": false,
+            "type": "float",
+            "desc": "铺货商品加价百分比，markup_type=0 时生效，0～999.9"
+          },
+          {
+            "name": "markup_type",
+            "required": false,
+            "type": "int",
+            "desc": "铺货加价方式：0百分比 1固定金额，默认 0"
+          },
+          {
+            "name": "markup_money",
+            "required": false,
+            "type": "float",
+            "desc": "铺货固定加价金额，markup_type=1 时必填且大于 0"
+          }
+        ],
+        "requests": [
+          {
+            "label": "新建卡密",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"name\": \"本地卡密商品\",\n  \"image\": \"https://example.com/a.png\",\n  \"description\": \"商品说明\",\n  \"delivery_method\": 1,\n  \"delivery_order\": 0,\n  \"limit_quantity\": 1,\n  \"price\": 10,\n  \"instruction\": \"请妥善保管卡密\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          },
+          {
+            "label": "新建人工发货",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"name\": \"人工发货商品\",\n  \"image\": \"https://example.com/a.png\",\n  \"description\": \"商品说明\",\n  \"delivery_method\": 3,\n  \"price\": 10,\n  \"manual_instruction\": \"<p>付款后请按说明联系客服</p>\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          },
+          {
+            "label": "更新",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"name\": \"本地卡密商品\",\n  \"image\": \"https://example.com/a.png\",\n  \"delivery_method\": 1,\n  \"price\": 12,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号；新建时由平台生成"
+          },
+          {
+            "name": "audit_status",
+            "desc": "审核状态：0 待审 / 1 延迟通过 / 2 通过 / -1 警告下架 / -2 强制下架"
+          },
+          {
+            "name": "status",
+            "desc": "上下架：1 上架 / 0 下架"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"audit_status\": 2,\n    \"status\": 1\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goods/changeStatus",
+        "desc": "更新商品状态",
+        "hint": "1 上架 / 0 下架；上架需完成商家认证，且审核通过；铺货商品依赖上游货源在售",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "status",
+            "required": true,
+            "type": "int",
+            "desc": "1 上架 / 0 下架"
+          }
+        ],
+        "requests": [
+          {
+            "label": "上架",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"status\": 1,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          },
+          {
+            "label": "下架",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"status\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "audit_status",
+            "desc": "审核状态：0 待审 / 1 延迟通过 / 2 通过 / -1 警告下架 / -2 强制下架"
+          },
+          {
+            "name": "status",
+            "desc": "上下架：1 上架 / 0 下架"
+          }
+        ],
+        "responses": [
+          {
+            "label": "上架",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"audit_status\": 2,\n    \"status\": 1\n  }\n}"
+          },
+          {
+            "label": "下架",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"audit_status\": 2,\n    \"status\": 0\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goods/delete",
+        "desc": "删除商品",
+        "hint": "按 goods_no 软删除当前商户商品",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "已删除的商品编号"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\"\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/goods/cover",
+        "desc": "生成文字封面",
+        "hint": "按文字生成 1080×1080 封面并上传存储；最多 80 字；前两个字符高亮",
+        "reqFields": [
+          {
+            "name": "text",
+            "required": true,
+            "type": "string",
+            "desc": "封面文字，最长 80"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"text\": \"本地卡密商品\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "url",
+            "desc": "封面图 URL，可直接用于创建商品 image"
+          },
+          {
+            "name": "width",
+            "desc": "宽度，固定 1080"
+          },
+          {
+            "name": "height",
+            "desc": "高度，固定 1080"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"url\": \"https://example.com/upload/shop/cover/20260820/a.png\",\n    \"width\": 1080,\n    \"height\": 1080\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "卡密库存",
+    "items": [
+      {
+        "path": "/openApi/stockSecretBatch/add",
+        "desc": "上传卡密",
+        "hint": "仅自营卡密商品；单次最多 5 万张；默认按行拆分、去重",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "content",
+            "required": true,
+            "type": "string",
+            "desc": "卡密文本；split_type=1 一行一张，=2 空行分块，=3 全部内容为一张"
+          },
+          {
+            "name": "first",
+            "required": false,
+            "type": "int",
+            "desc": "1 优先卖出本次卡密，默认 0"
+          },
+          {
+            "name": "remove_repeat",
+            "required": false,
+            "type": "int",
+            "desc": "1 去除重复（含库存已有），默认 1"
+          },
+          {
+            "name": "split_type",
+            "required": false,
+            "type": "int",
+            "desc": "1 单行卡密 / 2 多行卡密 / 3 整段一张，默认 1"
+          },
+          {
+            "name": "expire_time",
+            "required": false,
+            "type": "int",
+            "desc": "过期 Unix 秒；0 永不过期"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"content\": \"AAAA-BBBB-CCCC\\nDDDD-EEEE-FFFF\",\n  \"first\": 0,\n  \"remove_repeat\": 1,\n  \"split_type\": 1,\n  \"expire_time\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "import_count",
+            "desc": "实际导入张数"
+          },
+          {
+            "name": "stock_dup_count",
+            "desc": "因与库存重复未导入的张数"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "导入后可售库存"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"import_count\": 2,\n    \"stock_dup_count\": 0,\n    \"available_quantity\": 102\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/list",
+        "desc": "卡密查询",
+        "hint": "仅自营卡密商品；筛选 status：0 未售 / 1 已售 / 3 已作废 / 4 已过期，空则全部；返回 status：0 未售 / 1 锁定 / 2 已售 / 3 作废",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配卡密内容 / 批次号"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "0 未售 / 1 已售 / 3 已作废 / 4 已过期；空则全部"
+          },
+          {
+            "name": "first",
+            "required": false,
+            "type": "int",
+            "desc": "1 优先销售 / 0 非优先；空则全部"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"keywords\": \"\",\n  \"status\": \"\",\n  \"first\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "total",
+            "desc": "卡密条数（当前筛选）"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "可售库存"
+          },
+          {
+            "name": "locked_quantity",
+            "desc": "锁定库存"
+          },
+          {
+            "name": "sold_quantity",
+            "desc": "已售数量"
+          },
+          {
+            "name": "list",
+            "desc": "当前页；id / secret_code / batch_no / status（0未售 1锁定 2已售 3作废） / first / trade_no / expire_time / sold_time / create_time"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"total\": 1,\n    \"available_quantity\": 100,\n    \"locked_quantity\": 0,\n    \"sold_quantity\": 12,\n    \"list\": [\n      {\n        \"id\": 10001,\n        \"secret_code\": \"AAAA-BBBB-CCCC\",\n        \"batch_no\": \"SB26031601\",\n        \"status\": 0,\n        \"first\": 0,\n        \"trade_no\": \"\",\n        \"expire_time\": 0,\n        \"sold_time\": 0,\n        \"create_time\": 1710000000\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecretBatch/list",
+        "desc": "批次查询",
+        "hint": "当前商户卡密导入批次；goods_no 空则全部",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": false,
+            "type": "string",
+            "desc": "商品编号；空则全部"
+          },
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配批次号"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "1 有库存 / 2 已售罄；空则全部"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"keywords\": \"\",\n  \"status\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "批次总数"
+          },
+          {
+            "name": "list",
+            "desc": "当前页；batch_no / goods_no / goods_name / imported_quantity / available_quantity / locked_quantity / sold_quantity / invalid_quantity / status / remark / create_time"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"batch_no\": \"SB26031601\",\n        \"goods_no\": \"G10001\",\n        \"goods_name\": \"本地卡密商品\",\n        \"imported_quantity\": 100,\n        \"available_quantity\": 80,\n        \"locked_quantity\": 0,\n        \"sold_quantity\": 12,\n        \"invalid_quantity\": 8,\n        \"status\": 1,\n        \"remark\": \"\",\n        \"create_time\": 1710000000\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/invalidate",
+        "desc": "作废卡密",
+        "hint": "按卡密查询返回的 id 作废；仅未售 / 锁定可作废",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "ids",
+            "required": true,
+            "type": "array",
+            "desc": "卡密 id 数组；去重后单次最多 200 个正整数"
+          },
+          {
+            "name": "invalid_reason",
+            "required": false,
+            "type": "string",
+            "desc": "作废原因，最长 255"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"ids\": [\n    10001,\n    10002\n  ],\n  \"invalid_reason\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "affected",
+            "desc": "实际作废张数"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "作废后可售库存"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"affected\": 2,\n    \"available_quantity\": 98\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/cancelInvalidate",
+        "desc": "取消作废",
+        "hint": "仅已作废卡密可恢复为未售",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "ids",
+            "required": true,
+            "type": "array",
+            "desc": "卡密 id 数组；去重后单次最多 200 个正整数"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"ids\": [\n    10001\n  ],\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "affected",
+            "desc": "实际恢复张数"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "恢复后可售库存"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"affected\": 1,\n    \"available_quantity\": 99\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/setFirst",
+        "desc": "设置优先",
+        "hint": "仅未售卡密；first=1 优先卖出，=0 取消优先",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "ids",
+            "required": true,
+            "type": "array",
+            "desc": "卡密 id 数组；去重后单次最多 200 个正整数"
+          },
+          {
+            "name": "first",
+            "required": true,
+            "type": "int",
+            "desc": "1 优先 / 0 取消优先"
+          }
+        ],
+        "requests": [
+          {
+            "label": "优先",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"ids\": [\n    10001\n  ],\n  \"first\": 1,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          },
+          {
+            "label": "取消优先",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"ids\": [\n    10001\n  ],\n  \"first\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "affected",
+            "desc": "实际更新张数"
+          },
+          {
+            "name": "first",
+            "desc": "1 优先 / 0 非优先"
+          }
+        ],
+        "responses": [
+          {
+            "label": "优先",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"affected\": 1,\n    \"first\": 1\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/setExpire",
+        "desc": "设置过期",
+        "hint": "仅未售卡密；expire_time=0 永不过期",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "ids",
+            "required": true,
+            "type": "array",
+            "desc": "卡密 id 数组；去重后单次最多 200 个正整数"
+          },
+          {
+            "name": "expire_time",
+            "required": true,
+            "type": "int",
+            "desc": "过期 Unix 秒；0 永不过期"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"ids\": [\n    10001\n  ],\n  \"expire_time\": 0,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "affected",
+            "desc": "实际更新张数"
+          },
+          {
+            "name": "expire_time",
+            "desc": "过期 Unix 秒"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "更新后可售库存"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"affected\": 1,\n    \"expire_time\": 0,\n    \"available_quantity\": 100\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/stockSecret/invalidateAll",
+        "desc": "全部作废",
+        "hint": "作废该商品全部未售 / 锁定卡密；已售不受影响",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "商品编号"
+          },
+          {
+            "name": "invalid_reason",
+            "required": false,
+            "type": "string",
+            "desc": "作废原因，最长 255；空则 api_invalidate_all"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"G10001\",\n  \"invalid_reason\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "affected",
+            "desc": "实际作废张数"
+          },
+          {
+            "name": "available_quantity",
+            "desc": "作废后可售库存"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"G10001\",\n    \"affected\": 80,\n    \"available_quantity\": 0\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "采购",
+    "items": [
+      {
+        "path": "/openApi/purchase/quotePrice",
+        "desc": "询价",
+        "hint": "仅已代理货源商品；服务费由采购方承担，扣运营钱包；内容商品 quantity 强制 1",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "货源商品编号"
+          },
+          {
+            "name": "quantity",
+            "required": false,
+            "type": "int",
+            "desc": "默认 1；内容商品强制 1；人工发货可多件且库存不限；卡密不得低于 limit_quantity"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"SG20001\",\n  \"quantity\": 2,\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "goods_no",
+            "desc": "商品编号"
+          },
+          {
+            "name": "unit_price",
+            "desc": "采购单价"
+          },
+          {
+            "name": "total_amount",
+            "desc": "应付（货款+手续费）"
+          },
+          {
+            "name": "available_money",
+            "desc": "运营钱包余额"
+          },
+          {
+            "name": "balance_enough",
+            "desc": "余额是否足够"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"goods_no\": \"SG20001\",\n    \"delivery_method\": 1,\n    \"limit_quantity\": 1,\n    \"quantity\": 2,\n    \"unit_price\": 9.5,\n    \"goods_total_amount\": 19,\n    \"rate\": 0.6,\n    \"fee\": 0.11,\n    \"fee_payer\": 1,\n    \"total_amount\": 19.11,\n    \"available_quantity\": 50,\n    \"available_money\": 100,\n    \"balance_enough\": true\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/create",
+        "desc": "下单",
+        "hint": "仅货源；扣运营钱包；已发货时返回卡密/内容/发货说明",
+        "reqFields": [
+          {
+            "name": "goods_no",
+            "required": true,
+            "type": "string",
+            "desc": "货源商品编号"
+          },
+          {
+            "name": "quantity",
+            "required": false,
+            "type": "int",
+            "desc": "默认 1；内容商品强制 1；人工发货可多件且库存不限"
+          },
+          {
+            "name": "remark",
+            "required": false,
+            "type": "string",
+            "desc": "备注，最长 500 字"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"goods_no\": \"SG20001\",\n  \"quantity\": 1,\n  \"remark\": \"API采购\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "采购单号"
+          },
+          {
+            "name": "status",
+            "desc": "0待支付 / 1待发货 / 2已关闭 / 3已退款 / 4已发货 / 5已完成"
+          },
+          {
+            "name": "cards",
+            "desc": "卡密；未发货为空数组"
+          },
+          {
+            "name": "content",
+            "desc": "内容正文"
+          },
+          {
+            "name": "instruction",
+            "desc": "卡密使用说明"
+          },
+          {
+            "name": "manual_instruction",
+            "desc": "人工发货说明（富文本）；delivery_method=3 且已发货后返回"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"goods_no\": \"SG20001\",\n    \"goods_name\": \"货源卡密商品\",\n    \"delivery_method\": 1,\n    \"quantity\": 1,\n    \"unit_price\": 9.5,\n    \"goods_total_amount\": 9.5,\n    \"rate\": 0.6,\n    \"fee\": 0.06,\n    \"fee_payer\": 1,\n    \"total_amount\": 9.56,\n    \"status\": 4,\n    \"create_time\": 1710000000,\n    \"deliver_time\": 1710000100,\n    \"cards\": [\n      {\n        \"code\": \"XXXX-YYYY-ZZZZ\",\n        \"sold_time\": 1710000100\n      }\n    ],\n    \"content\": \"\",\n    \"instruction\": \"请妥善保管卡密\"\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/list",
+        "desc": "采购记录",
+        "hint": "当前商户作为买家的货源采购单",
+        "reqFields": [
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "订单状态；空则全部"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配采购单号 / 商品编号 / 商品名称"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"status\": \"\",\n  \"keywords\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "总数"
+          },
+          {
+            "name": "list",
+            "desc": "含 trade_no / goods_no / status / total_amount / complaint"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"trade_no\": \"T2603161200001\",\n        \"goods_no\": \"SG20001\",\n        \"goods_name\": \"货源卡密商品\",\n        \"status\": 4,\n        \"total_amount\": 9.56,\n        \"complaint\": {\n          \"complaint_no\": \"SC26031601\",\n          \"status\": 0,\n          \"done_status\": 0\n        }\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/query",
+        "desc": "查单",
+        "hint": "按采购单号；已发货返回卡密/内容/发货说明；无投诉时 complaint_status 为 -1",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "采购单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "采购单号"
+          },
+          {
+            "name": "status",
+            "desc": "订单状态"
+          },
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号；无则为空串"
+          },
+          {
+            "name": "cards",
+            "desc": "卡密；未发货为空数组"
+          },
+          {
+            "name": "instruction",
+            "desc": "卡密使用说明"
+          },
+          {
+            "name": "manual_instruction",
+            "desc": "人工发货说明（富文本）；delivery_method=3 且已发货后返回"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"goods_no\": \"SG20001\",\n    \"goods_name\": \"货源卡密商品\",\n    \"status\": 4,\n    \"total_amount\": 9.56,\n    \"complaint_no\": \"\",\n    \"complaint_status\": -1,\n    \"cards\": [\n      {\n        \"code\": \"XXXX-YYYY-ZZZZ\",\n        \"sold_time\": 1710000100\n      }\n    ],\n    \"content\": \"\",\n    \"instruction\": \"请妥善保管卡密\"\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/applyComplaint",
+        "desc": "发起投诉",
+        "hint": "订单状态须为待发货/已发货/已完成；images 至少 1 张、最多 6 张（可用上传图片接口）",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "采购单号"
+          },
+          {
+            "name": "reason",
+            "required": true,
+            "type": "string",
+            "desc": "投诉原因，最长 255 字"
+          },
+          {
+            "name": "description",
+            "required": false,
+            "type": "string",
+            "desc": "补充说明，最长 2000 字"
+          },
+          {
+            "name": "images",
+            "required": true,
+            "type": "array",
+            "desc": "凭证图片 URL 数组，1–6 张"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"reason\": \"卡密无法使用\",\n  \"description\": \"\",\n  \"images\": [\n    \"https://example.com/a.png\"\n  ],\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "status",
+            "desc": "0 待商家处理 / 1 平台介入 / 2 已结案 / 3 已撤销"
+          },
+          {
+            "name": "expire_time",
+            "desc": "商家处理截止时间戳"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"complaint_no\": \"SC26031601\",\n    \"status\": 0,\n    \"expire_time\": 1710086400\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/complaintDetail",
+        "desc": "投诉详情",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "status",
+            "desc": "0 待商家处理 / 1 平台介入 / 2 已结案 / 3 已撤销"
+          },
+          {
+            "name": "result",
+            "desc": "0 未裁决 / 1 商家胜诉 / 2 买家胜诉"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"complaint_no\": \"SC26031601\",\n    \"trade_no\": \"T2603161200001\",\n    \"status\": 0,\n    \"result\": 0,\n    \"reason\": \"卡密无法使用\",\n    \"images\": [\n      \"https://example.com/a.png\"\n    ],\n    \"goods_no\": \"SG20001\",\n    \"order_status\": 4\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/complaintMessageList",
+        "desc": "投诉留言列表",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "list",
+            "desc": "operator_type：buyer / merchant / parent / system"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"list\": [\n      {\n        \"operator_type\": \"buyer\",\n        \"content\": \"卡密无法使用\",\n        \"images\": [\n          \"https://example.com/a.png\"\n        ],\n        \"create_time\": 1710000200\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/complaintSendMessage",
+        "desc": "投诉留言",
+        "hint": "content 与 images 至少填一项；已结案不可发",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "content",
+            "required": false,
+            "type": "string",
+            "desc": "留言正文"
+          },
+          {
+            "name": "images",
+            "required": false,
+            "type": "array",
+            "desc": "图片 URL，最多 6 张"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"content\": \"请尽快处理\",\n  \"images\": [],\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": null\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/complaintCancel",
+        "desc": "撤销投诉",
+        "hint": "仅待商家处理（status=0）可撤",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": null\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/purchase/complaintApplyPlatform",
+        "desc": "申请平台介入",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": null\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "订单管理",
+    "items": [
+      {
+        "path": "/openApi/order/list",
+        "desc": "订单列表",
+        "hint": "当前商户作为卖家的店铺订单（含铺货）；默认近 6 个月；status：0待支付 / 1待发货 / 2已关闭 / 3已退款 / 4已发货 / 5已完成",
+        "reqFields": [
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "订单状态；空则全部"
+          },
+          {
+            "name": "platform",
+            "required": false,
+            "type": "string",
+            "desc": "shop / api / purchase；空则全部"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配订单号 / 流水号 / 邮箱 / 商品编号 / 商品名称"
+          },
+          {
+            "name": "card_no",
+            "required": false,
+            "type": "string",
+            "desc": "按已售卡密反查订单"
+          },
+          {
+            "name": "start_time",
+            "required": false,
+            "type": "int",
+            "desc": "创建时间起，Unix 秒"
+          },
+          {
+            "name": "end_time",
+            "required": false,
+            "type": "int",
+            "desc": "创建时间止，Unix 秒"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"status\": \"\",\n  \"platform\": \"\",\n  \"keywords\": \"\",\n  \"card_no\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "总数"
+          },
+          {
+            "name": "list",
+            "desc": "当前页；含 trade_no / platform / identity（merchant自营 parent货源 agent代理） / goods_no / goods_name / status / total_amount / create_time 等"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"trade_no\": \"T2603161200001\",\n        \"platform\": \"shop\",\n        \"identity\": \"merchant\",\n        \"goods_no\": \"G10001\",\n        \"goods_name\": \"本地卡密商品\",\n        \"status\": 4,\n        \"total_amount\": 10,\n        \"create_time\": 1710000000\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/order/info",
+        "desc": "订单详情",
+        "hint": "卖家视角；代理订单不返回卡密/内容；identity=agent 时 cards/content 为空；人工发货已发货后返回 manual_instruction",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "平台订单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "平台订单号"
+          },
+          {
+            "name": "identity",
+            "desc": "merchant 自营 / parent 货源 / agent 代理"
+          },
+          {
+            "name": "status",
+            "desc": "0待支付 / 1待发货 / 2已关闭 / 3已退款 / 4已发货 / 5已完成"
+          },
+          {
+            "name": "cards",
+            "desc": "卡密数组；未发货或代理为空"
+          },
+          {
+            "name": "content",
+            "desc": "内容正文"
+          },
+          {
+            "name": "instruction",
+            "desc": "卡密使用说明；未发货或代理为空"
+          },
+          {
+            "name": "manual_instruction",
+            "desc": "人工发货说明（富文本）；delivery_method=3 且已发货后返回；代理为空"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"platform\": \"shop\",\n    \"identity\": \"merchant\",\n    \"goods_no\": \"G10001\",\n    \"goods_name\": \"本地卡密商品\",\n    \"delivery_method\": 1,\n    \"quantity\": 1,\n    \"status\": 4,\n    \"total_amount\": 10,\n    \"cards\": [\n      {\n        \"code\": \"AAAA-BBBB-CCCC\",\n        \"sold_time\": 1710000100\n      }\n    ],\n    \"content\": \"\",\n    \"instruction\": \"请妥善保管卡密\"\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/order/deliver",
+        "desc": "手动发货",
+        "hint": "待发货 → 已发货；仅自营/货源可发，代理请等待货源商发货",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "平台订单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "平台订单号"
+          },
+          {
+            "name": "status",
+            "desc": "发货后状态"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"status\": 4\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/order/refund",
+        "desc": "退款",
+        "hint": "仅货主（自营/货源）可退；需商户分组开启自助退款；有进行中投诉不可退",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "平台订单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "平台订单号"
+          },
+          {
+            "name": "status",
+            "desc": "退款后状态"
+          },
+          {
+            "name": "refund_amount",
+            "desc": "退款金额"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"status\": 3,\n    \"refund_amount\": 10\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/order/statistics",
+        "desc": "订单统计",
+        "hint": "卖家视角，近 6 个月；按状态计数",
+        "reqFields": [],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "全部"
+          },
+          {
+            "name": "unpaid",
+            "desc": "待支付"
+          },
+          {
+            "name": "paid",
+            "desc": "待发货"
+          },
+          {
+            "name": "closed",
+            "desc": "已关闭"
+          },
+          {
+            "name": "refund",
+            "desc": "已退款"
+          },
+          {
+            "name": "delivered",
+            "desc": "已发货"
+          },
+          {
+            "name": "finished",
+            "desc": "已完成"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 10,\n    \"unpaid\": 1,\n    \"paid\": 2,\n    \"closed\": 0,\n    \"refund\": 1,\n    \"delivered\": 4,\n    \"finished\": 2\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/channelBuyerBlack/addFromOrder",
+        "desc": "订单买家拉黑",
+        "hint": "仅本店订单；按订单多维拉黑：IP / juuid / 邮箱 / visitor_key / 支付宝身份 / 微信身份；有值的维度都会写入同一组",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "平台订单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "平台订单号"
+          },
+          {
+            "name": "is_blocked",
+            "desc": "是否已在黑名单"
+          },
+          {
+            "name": "black_status",
+            "desc": "各维度：ip / juuid / email / visitor_key / alipay_identity_id / weixin_identity_id；另含 is_blocked / is_platform_blocked / is_merchant_blocked / platform / merchant / group_id"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"is_blocked\": true,\n    \"black_status\": {\n      \"ip\": true,\n      \"juuid\": true,\n      \"email\": true,\n      \"visitor_key\": true,\n      \"alipay_identity_id\": false,\n      \"weixin_identity_id\": false,\n      \"is_blocked\": true,\n      \"is_platform_blocked\": false,\n      \"is_merchant_blocked\": true,\n      \"platform\": {\n        \"ip\": false,\n        \"juuid\": false,\n        \"email\": false,\n        \"visitor_key\": false,\n        \"alipay_identity_id\": false,\n        \"weixin_identity_id\": false\n      },\n      \"merchant\": {\n        \"ip\": true,\n        \"juuid\": true,\n        \"email\": true,\n        \"visitor_key\": true,\n        \"alipay_identity_id\": false,\n        \"weixin_identity_id\": false\n      },\n      \"group_id\": \"abc\",\n      \"platform_group_id\": \"\",\n      \"merchant_group_id\": \"abc\"\n    }\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/channelBuyerBlack/delete",
+        "desc": "订单买家解黑",
+        "hint": "仅本店订单；按 trade_no 解除本店该买家各维度拉黑；平台名单不受影响",
+        "reqFields": [
+          {
+            "name": "trade_no",
+            "required": true,
+            "type": "string",
+            "desc": "平台订单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"trade_no\": \"T2603161200001\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "trade_no",
+            "desc": "平台订单号"
+          },
+          {
+            "name": "is_blocked",
+            "desc": "是否仍在黑名单"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"trade_no\": \"T2603161200001\",\n    \"is_blocked\": false,\n    \"black_status\": {\n      \"ip\": false,\n      \"juuid\": false,\n      \"email\": false,\n      \"visitor_key\": false,\n      \"alipay_identity_id\": false,\n      \"weixin_identity_id\": false,\n      \"is_blocked\": false,\n      \"is_platform_blocked\": false,\n      \"is_merchant_blocked\": false,\n      \"platform\": {\n        \"ip\": false,\n        \"juuid\": false,\n        \"email\": false,\n        \"visitor_key\": false,\n        \"alipay_identity_id\": false,\n        \"weixin_identity_id\": false\n      },\n      \"merchant\": {\n        \"ip\": false,\n        \"juuid\": false,\n        \"email\": false,\n        \"visitor_key\": false,\n        \"alipay_identity_id\": false,\n        \"weixin_identity_id\": false\n      },\n      \"group_id\": \"\",\n      \"platform_group_id\": \"\",\n      \"merchant_group_id\": \"\"\n    }\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "订单投诉",
+    "items": [
+      {
+        "path": "/openApi/complaint/list",
+        "desc": "投诉列表",
+        "hint": "卖家视角（自营/货源/代理）；status：0待商家处理 / 1平台介入 / 2已结案 / 3已撤销；空则全部",
+        "reqFields": [
+          {
+            "name": "page_no",
+            "required": false,
+            "type": "int",
+            "desc": "页码，默认 1"
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "type": "int",
+            "desc": "每页条数，默认 20，1–100"
+          },
+          {
+            "name": "status",
+            "required": false,
+            "type": "int",
+            "desc": "投诉状态；空则全部"
+          },
+          {
+            "name": "keywords",
+            "required": false,
+            "type": "string",
+            "desc": "匹配投诉单号 / 订单号 / 邮箱"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"page_no\": 1,\n  \"page_size\": 20,\n  \"status\": \"\",\n  \"keywords\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "total",
+            "desc": "总数"
+          },
+          {
+            "name": "list",
+            "desc": "含 complaint_no / trade_no / identity / status / unread_count / order"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"total\": 1,\n    \"list\": [\n      {\n        \"complaint_no\": \"SC26031601\",\n        \"trade_no\": \"T2603161200001\",\n        \"identity\": \"merchant\",\n        \"reason\": \"卡密无法使用\",\n        \"status\": 0,\n        \"unread_count\": 1,\n        \"order\": {\n          \"trade_no\": \"T2603161200001\",\n          \"goods_name\": \"本地卡密商品\",\n          \"total_amount\": 10,\n          \"status\": 4\n        }\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/complaint/detail",
+        "desc": "投诉详情",
+        "hint": "代理不返回卡密；identity：merchant 自营 / parent 货源 / agent 代理",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "identity",
+            "desc": "merchant / parent / agent"
+          },
+          {
+            "name": "status",
+            "desc": "0 待商家处理 / 1 平台介入 / 2 已结案 / 3 已撤销"
+          },
+          {
+            "name": "result",
+            "desc": "0 未裁决 / 1 商家胜诉 / 2 买家胜诉"
+          },
+          {
+            "name": "cards",
+            "desc": "卡密；代理为空"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"complaint_no\": \"SC26031601\",\n    \"trade_no\": \"T2603161200001\",\n    \"identity\": \"merchant\",\n    \"status\": 0,\n    \"result\": 0,\n    \"reason\": \"卡密无法使用\",\n    \"images\": [\n      \"https://example.com/a.png\"\n    ],\n    \"goods_name\": \"本地卡密商品\",\n    \"order_status\": 4,\n    \"cards\": [\n      {\n        \"code\": \"AAAA-BBBB-CCCC\",\n        \"sold_time\": 1710000100\n      }\n    ],\n    \"content\": \"\",\n    \"instruction\": \"请妥善保管卡密\"\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/complaint/messageList",
+        "desc": "投诉留言列表",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "list",
+            "desc": "operator_type：buyer / merchant / parent / system"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"list\": [\n      {\n        \"operator_type\": \"buyer\",\n        \"content\": \"卡密无法使用\",\n        \"images\": [\n          \"https://example.com/a.png\"\n        ],\n        \"create_time\": 1710000200\n      }\n    ]\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/complaint/sendMessage",
+        "desc": "投诉留言",
+        "hint": "自营以 merchant 发言，货源以 parent 发言；content 与 images 至少填一项",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "content",
+            "required": false,
+            "type": "string",
+            "desc": "留言正文"
+          },
+          {
+            "name": "images",
+            "required": false,
+            "type": "array",
+            "desc": "图片 URL，最多 6 张"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"content\": \"已重新发货\",\n  \"images\": [],\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": null\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/complaint/refund",
+        "desc": "同意退款",
+        "hint": "仅自营/货源；代理请等待货源商处理；结案为买家胜诉",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "remark",
+            "required": false,
+            "type": "string",
+            "desc": "备注，最长 500 字"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"remark\": \"\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "status",
+            "desc": "结案后为 2"
+          },
+          {
+            "name": "result",
+            "desc": "买家胜诉为 2"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"complaint_no\": \"SC26031601\",\n    \"status\": 2,\n    \"result\": 2\n  }\n}"
+          }
+        ]
+      },
+      {
+        "path": "/openApi/complaint/markDone",
+        "desc": "标记完成",
+        "hint": "仅自营/货源；投诉仍待处理，等待买家申请平台介入",
+        "reqFields": [
+          {
+            "name": "complaint_no",
+            "required": true,
+            "type": "string",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "reason",
+            "required": true,
+            "type": "string",
+            "desc": "完成说明，最长 500 字"
+          },
+          {
+            "name": "images",
+            "required": false,
+            "type": "array",
+            "desc": "凭证图片 URL，最多 6 张"
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"complaint_no\": \"SC26031601\",\n  \"reason\": \"已补发卡密\",\n  \"images\": [],\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "complaint_no",
+            "desc": "投诉单号"
+          },
+          {
+            "name": "done_status",
+            "desc": "标记完成后为 1"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"complaint_no\": \"SC26031601\",\n    \"status\": 0,\n    \"done_status\": 1\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "账户",
+    "items": [
+      {
+        "path": "/openApi/merchant/balance",
+        "desc": "钱包余额",
+        "hint": "三类钱包；货源采购扣运营钱包",
+        "reqFields": [],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "platform_money",
+            "desc": "平台钱包"
+          },
+          {
+            "name": "deposit_money",
+            "desc": "押金钱包"
+          },
+          {
+            "name": "operate_money",
+            "desc": "运营钱包（货源扣款）"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"platform_money\": 10.5,\n    \"deposit_money\": 20,\n    \"operate_money\": 100.25\n  }\n}"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "通用功能",
+    "items": [
+      {
+        "path": "/openApi/upload/image",
+        "desc": "上传图片",
+        "hint": "image 为图片 base64 或 data URL；单张不超过 5MB；宽或高不超过 8000 像素；仅 JPG / PNG / GIF / WebP；返回 URL 可用于创建商品 image",
+        "reqFields": [
+          {
+            "name": "image",
+            "required": true,
+            "type": "string",
+            "desc": "图片 base64，或 data:image/png;base64,..."
+          }
+        ],
+        "requests": [
+          {
+            "label": "",
+            "body": "{\n  \"app_id\": \"your_app_id\",\n  \"timestamp\": \"1710000000\",\n  \"nonce\": \"a1b2c3d4e5f67890\",\n  \"image\": \"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==\",\n  \"sign\": \"hmac_sha256_hex\"\n}"
+          }
+        ],
+        "fields": [
+          {
+            "name": "url",
+            "desc": "图片 URL"
+          },
+          {
+            "name": "width",
+            "desc": "宽度"
+          },
+          {
+            "name": "height",
+            "desc": "高度"
+          }
+        ],
+        "responses": [
+          {
+            "label": "",
+            "body": "{\n  \"code\": 1,\n  \"msg\": \"success\",\n  \"time\": 1710000000,\n  \"data\": {\n    \"url\": \"https://example.com/upload/openapi/20260820/a.png\",\n    \"width\": 1,\n    \"height\": 1\n  }\n}"
+          }
+        ]
+      }
+    ]
+  }
+]
